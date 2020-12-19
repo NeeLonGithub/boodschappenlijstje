@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import './App.css';
-import { AfstreepItem } from './afstreepItem/AfstreepItem';
 import { Boodschap } from './App.model';
+import { Boodschappenlijstje } from './boodschappenlijstje/Boodschappenlijstje';
+import { AfstreepItemModel } from './afstreep-item/AfstreepItem.model';
 
 function App() {
-  const firstBoodschappen: Boodschap[] = [{name: 'appels', isChecked: true},
-    {name: 'brood', isChecked: true},
-    {name: 'cola', isChecked: false},
-    {name: 'drop', isChecked: false},
-    {name: 'erwten', isChecked: true},
-    {name: 'fristi', isChecked: false}
+  const firstBoodschappen: Boodschap[] = [
+    { name: 'appels', isChecked: true },
+    { name: 'brood', isChecked: true },
+    { name: 'cola', isChecked: false },
+    { name: 'drop', isChecked: false },
+    { name: 'erwten', isChecked: true },
+    { name: 'fristi', isChecked: false }
   ];
 
   const [boodschappen, setBoodschappen] = useState<Boodschap[]>(firstBoodschappen);
@@ -17,28 +19,18 @@ function App() {
   const toggleBoodschap = (index: number) => {
     setBoodschappen((previousBoodschappen) => {
       return previousBoodschappen.map((boodschap, i) => {
-        return i !== index ? boodschap : {...boodschap, isChecked: !boodschap.isChecked};
+        return i !== index ? boodschap : { ...boodschap, isChecked: !boodschap.isChecked };
       });
     });
   };
 
+  const afstreepItems: AfstreepItemModel[] = boodschappen.map(
+    (boodschap, index) => ({ ...boodschap, onClick: () => toggleBoodschap(index) })
+  );
+
   return (
     <div className="App">
-      <h1>Boodschappenlijstje</h1>
-      <div>
-        {boodschappen.map((boodschap, index)=>{
-          return (<AfstreepItem
-            key={boodschap.name}
-            name={boodschap.name}
-            isChecked={boodschap.isChecked}
-            onClick={() => {
-              toggleBoodschap(index);
-              console.log(boodschap);
-
-            }}
-          ></AfstreepItem>);
-        })}
-      </div>
+      <Boodschappenlijstje titel={'Test lijstje'} afstreepItems={afstreepItems}></Boodschappenlijstje>
     </div>
   );
 }
