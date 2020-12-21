@@ -5,6 +5,7 @@ Boodschappenlijstje is a work in progress shopping list application.
 ### Achievements
 
 * Mark things of the list as checked
+* Get lists from remote
 
 ### Next goals
 
