@@ -1,0 +1,13 @@
+.afstreep-item {
+  display: flex;
+  justify-content: space-between;
+
+  &__name {
+    cursor: pointer;
+    margin: 5px;
+
+    &--checked {
+      text-decoration: line-through;
+    }
+  }
+}

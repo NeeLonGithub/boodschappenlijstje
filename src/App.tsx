@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
-import { Boodschap } from './App.model';
+import './App.scss';
+import { Boodschap, BoodschappenlijstjeData } from './App.model';
 import { Boodschappenlijstje } from './boodschappenlijstje/Boodschappenlijstje';
 import Firebase from './firebase';
-import { BoodschappenlijstjeData } from './boodschappenlijstje/Boodschappenlijstje.model';
 
 function App() {
 
@@ -22,13 +21,13 @@ function App() {
     });
   }, [listIndex]);
 
-  const createUpdateLijstjeFunction = (index: number) => {
-    return (title: string, boodschappen: Boodschap[]) => {
-      const databaseRef = Firebase.database().ref(`/boodschappenlijstjes/${index}/`);
+  const createUpdateBoodschappenFunction = (index: number) => {
+    return (boodschappen: Boodschap[]) => {
+      const databaseRef = Firebase.database().ref(`/boodschappenlijstjes/${index}/boodschappen/`);
       const newLijstjes: BoodschappenlijstjeData[] = [...boodschappenlijstjes];
-      newLijstjes[index] = { title: title, boodschappen: boodschappen };
+      newLijstjes[index] = { ...newLijstjes[index], boodschappen: boodschappen };
       setBoodschappenlijstjes(newLijstjes);
-      databaseRef.set({ title: title, boodschappen: boodschappen });
+      databaseRef.set(boodschappen);
     };
   };
 
@@ -37,7 +36,13 @@ function App() {
       <div className="App">
         <h1>Boodschappenlijstjes</h1>
         {boodschappenlijstjes.map(
-          (boodschappenlijstje, index) => (<div key={boodschappenlijstje.title} onClick={() => setListIndex(index)}>{boodschappenlijstje.title}</div>)
+          (boodschappenlijstje, index) => (
+            <div className="App__clickable-text"
+                 key={boodschappenlijstje.title}
+                 onClick={() => setListIndex(index)}>
+              {boodschappenlijstje.title}
+            </div>
+          )
         )}
       </div>
     );
@@ -48,8 +53,8 @@ function App() {
         <Boodschappenlijstje
           title={boodschappenlijstjes[listIndex].title}
           boodschappen={boodschappenlijstjes[listIndex].boodschappen}
-          updateLijstje={createUpdateLijstjeFunction(listIndex)}
-        ></Boodschappenlijstje>
+          updateBoodschappen={createUpdateBoodschappenFunction(listIndex)}
+        />
       </div>
     );
   }

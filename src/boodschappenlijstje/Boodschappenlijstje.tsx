@@ -1,33 +1,37 @@
-import React from 'react';
-import { AfstreepItemModel } from '../afstreep-item/AfstreepItem.model';
-import { AfstreepItem } from '../afstreep-item/AfstreepItem';
-import { BoodschappenlijstjeModel } from './Boodschappenlijstje.model';
+import React, { FC } from 'react';
+import { AfstreepItem } from './afstreep-item/AfstreepItem';
+import { Boodschap } from '../App.model';
 
-export class Boodschappenlijstje extends React.Component<BoodschappenlijstjeModel> {
+interface BoodschappenlijstjeProps {
+  title: string;
+  boodschappen: Boodschap[];
+  updateBoodschappen: (boodschappen: Boodschap[]) => void;
+}
 
-  public toggleBoodschap = (index: number) => {
-    const newBoodschappen = this.props.boodschappen.map((boodschap, i) => {
+export const Boodschappenlijstje: FC<BoodschappenlijstjeProps> = (
+  { title, boodschappen = [], updateBoodschappen }
+) => {
+
+  const toggleBoodschap = (index: number) => {
+    const newBoodschappen = boodschappen.map((boodschap, i) => {
       return i !== index ? boodschap : { ...boodschap, isChecked: !boodschap.isChecked };
     });
-    this.props.updateLijstje(this.props.title, newBoodschappen);
+    updateBoodschappen(newBoodschappen);
   };
 
-  public render() {
-    const afstreepItems: AfstreepItemModel[] = this.props.boodschappen.map(
-      (boodschap, index) => ({ ...boodschap, onClick: () => this.toggleBoodschap(index) })
-    );
-    return (
-      <div>
-        <h1>{this.props.title}</h1>
-        {afstreepItems.map((afstreepItem) => {
-          return (<AfstreepItem
-            key={afstreepItem.name}
-            name={afstreepItem.name}
-            isChecked={afstreepItem.isChecked}
-            onClick={afstreepItem.onClick}
-          ></AfstreepItem>);
-        })}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h1>{title}</h1>
+      {boodschappen.map((boodschap, index) => {
+        return (
+          <AfstreepItem
+            key={boodschap.name}
+            name={boodschap.name}
+            isChecked={boodschap.isChecked}
+            onToggle={() => toggleBoodschap(index)}
+          />
+        );
+      })}
+    </div>
+  );
+};
