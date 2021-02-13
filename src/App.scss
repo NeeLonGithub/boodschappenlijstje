@@ -1,16 +1,3 @@
 .App {
   margin: 0 10%;
-
-  &__text-button {
-    text-decoration: underline;
-
-  }
-  &__clickable-text {
-    cursor: pointer;
-    margin-bottom: 18px;
-
-    &:hover {
-      color: #6495ED;
-    }
-   }
 }

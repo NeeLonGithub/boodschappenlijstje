@@ -1,19 +1,32 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './AfstreepItem.scss';
+import { Boodschap, listenToBoodschap, stopListeningToBoodschap, updateBoodschapIsChecked } from '../../resources/boodschap.resources';
 
 interface AfstreepItemProps {
-  name: string;
-  isChecked: boolean;
-  onToggle: () => void;
+  boodschapId: string;
 }
 
-export const AfstreepItem: FC<AfstreepItemProps> = ({ name, isChecked, onToggle }) => {
+export const AfstreepItem: FC<AfstreepItemProps> = ({ boodschapId }) => {
+
+  const [boodschap, setBoodschap] = useState<Boodschap>({} as Boodschap);
+
+  useEffect(() => {
+    listenToBoodschap(boodschapId, setBoodschap);
+    return () => stopListeningToBoodschap(boodschapId);
+  }, [boodschapId]);
+
+  const toggleBoodschap = () => {
+    const setValue = !boodschap.isChecked;
+    setBoodschap({...boodschap, isChecked: setValue});
+    updateBoodschapIsChecked(boodschapId, setValue);
+  };
+
   return (
     <div className={`afstreep-item`}>
       <div
-        className={`afstreep-item__name ${isChecked ? 'afstreep-item__name--checked' : ''}`}
-        onClick={onToggle}>
-        {name}
+        className={`afstreep-item__name ${boodschap.isChecked ? 'afstreep-item__name--checked' : ''}`}
+        onClick={toggleBoodschap}>
+        {boodschap.name}
       </div>
     </div>
   );

@@ -1,34 +1,34 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AfstreepItem } from './afstreep-item/AfstreepItem';
-import { Boodschap } from '../App.model';
+import { Boodschappenlijst, listenToBoodschappenlijstje, stopListeningToBoodschappenLijstje } from '../resources/boodschappenlijstje.resource';
 
 interface BoodschappenlijstjeProps {
-  title: string;
-  boodschappen: Boodschap[];
-  updateBoodschappen: (boodschappen: Boodschap[]) => void;
+  boodschappenlijstjeId: string;
 }
 
 export const Boodschappenlijstje: FC<BoodschappenlijstjeProps> = (
-  { title, boodschappen = [], updateBoodschappen }
+  { boodschappenlijstjeId }
 ) => {
 
-  const toggleBoodschap = (index: number) => {
-    const newBoodschappen = boodschappen.map((boodschap, i) => {
-      return i !== index ? boodschap : { ...boodschap, isChecked: !boodschap.isChecked };
+  const [title, setTitle] = useState<string>('');
+  const [boodschappen, setBoodschappen] = useState<string[]>([]);
+
+  useEffect(() => {
+    listenToBoodschappenlijstje(boodschappenlijstjeId, (boodschappenlijstje: Boodschappenlijst) => {
+      setTitle(boodschappenlijstje.title);
+      setBoodschappen(boodschappenlijstje.boodschappen)
     });
-    updateBoodschappen(newBoodschappen);
-  };
+    return () => stopListeningToBoodschappenLijstje(boodschappenlijstjeId);
+  }, [boodschappenlijstjeId]);
 
   return (
     <div>
       <h1>{title}</h1>
-      {boodschappen.map((boodschap, index) => {
+      {boodschappen.map((boodschapId) => {
         return (
           <AfstreepItem
-            key={boodschap.name}
-            name={boodschap.name}
-            isChecked={boodschap.isChecked}
-            onToggle={() => toggleBoodschap(index)}
+            key={boodschapId}
+            boodschapId={boodschapId}
           />
         );
       })}
