@@ -16,3 +16,13 @@ export const stopListeningToBoodschappenLijstje = (boodschappenlijstId: string) 
   const databaseRef = Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId);
   databaseRef.off();
 }
+
+export const updateBoodschappenlijstjeTitle = (boodschappenlijstId: string, title: string) => {
+  const databaseRef = Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId);
+  databaseRef.update({title: title});
+}
+
+export const updateBoodschappenlijstjeBoodschappen = (boodschappenlijstId: string, boodschapIds: string[]) => {
+  const databaseRef = Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId);
+  databaseRef.update({boodschappen: boodschapIds});
+}

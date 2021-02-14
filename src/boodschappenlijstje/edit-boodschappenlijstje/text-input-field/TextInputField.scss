@@ -1,0 +1,15 @@
+.text-input {
+  width: calc(100% - 6px);
+  &__size {
+    &--normal {
+      font-size: 16px;
+      height: 27px;
+    }
+
+    &--large {
+      font-size: 2em;
+      font-weight: bold;
+      height: 74.875px;
+    }
+  }
+}

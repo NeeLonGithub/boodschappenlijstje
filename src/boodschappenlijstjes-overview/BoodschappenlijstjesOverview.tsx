@@ -2,12 +2,14 @@ import React, { FC, useEffect, useState } from 'react';
 import './BoodschappenlijstjesOverview.scss';
 import { Boodschappenlijst } from '../resources/boodschappenlijstje.resource';
 import { listenToBoodschappenlijstjes, stopListeningToBoodschappenLijstjes } from '../resources/boodschappenlijstjes.resource';
+import EditIcon from '../icons/edit-icon';
 
 interface BoodschappenlijstjesOverviewProps {
   selectLijstje: (lijstjeId: string) => void;
+  editLijstje: (lijstjeId: string) => void;
 }
 
-export const BoodschappenlijstjesOverview: FC<BoodschappenlijstjesOverviewProps> = ({ selectLijstje }) => {
+export const BoodschappenlijstjesOverview: FC<BoodschappenlijstjesOverviewProps> = ({ selectLijstje, editLijstje }) => {
 
   const [boodschappenlijstjes, setBoodschappenlijstjes] = useState<{ [listId: string]: Boodschappenlijst }>({});
 
@@ -30,6 +32,12 @@ export const BoodschappenlijstjesOverview: FC<BoodschappenlijstjesOverviewProps>
             <div className="boodschappenlijstjes-overview__clickable-text"
                  onClick={() => selectLijstje(lijstjeId)}>
               {lijstje.title}
+            </div>
+            <div>
+              <button
+                onClick={() => editLijstje(lijstjeId)}>
+                <EditIcon/>
+              </button>
             </div>
           </div>
         )

@@ -19,3 +19,16 @@ export const updateBoodschapIsChecked = (boodschapId: string, isChecked: boolean
   const databaseRef = Firebase.database().ref(`/boodschappen/`).child(boodschapId);
   databaseRef.update({isChecked: isChecked});
 }
+
+export const updateBoodschapName = (boodschapId: string, name: string) => {
+  const databaseRef = Firebase.database().ref(`/boodschappen/`).child(boodschapId);
+  databaseRef.update({name: name});
+}
+
+export const createBoodschap = (boodschap: Boodschap) => {
+  return Firebase.database().ref(`/boodschappen/`).push(boodschap).key as string;
+}
+
+export const deleteBooschap = (boodschapId: string) => {
+  return Firebase.database().ref(`/boodschappen/`).child(boodschapId).remove();
+}
