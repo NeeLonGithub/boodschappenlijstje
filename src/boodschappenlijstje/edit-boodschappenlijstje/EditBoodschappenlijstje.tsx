@@ -8,8 +8,7 @@ import {
   Boodschappenlijst,
   listenToBoodschappenlijstje,
   stopListeningToBoodschappenLijstje,
-  updateBoodschappenlijstjeBoodschappen,
-  updateBoodschappenlijstjeTitle
+  updateBoodschappenlijstjeBoodschappen
 } from '../../resources/boodschappenlijstje.resource';
 import { Boodschap, createBoodschap, deleteBooschap } from '../../resources/boodschap.resources';
 
@@ -25,11 +24,7 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
 
   useEffect(() => {
     listenToBoodschappenlijstje(boodschappenlijstjeId, (boodschappenlijstje: Boodschappenlijst) => {
-      if (!boodschappenlijstje.title) {
-        const title = new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' });
-        updateBoodschappenlijstjeTitle(boodschappenlijstjeId, title);
-      }
-      setBoodschappen(boodschappenlijstje.boodschappen);
+      setBoodschappen(boodschappenlijstje?.boodschappen || []);
     });
     return () => stopListeningToBoodschappenLijstje(boodschappenlijstjeId);
   }, [boodschappenlijstjeId]);
@@ -45,17 +40,17 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
 
   const deleteBoodschap = (index: number) => {
     let newBoodschappen: string[] = [...boodschappen];
-    const [removedBoodschaId] = newBoodschappen.splice(index, 1);
+    const [removedBoodschapId] = newBoodschappen.splice(index, 1);
     updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschappen);
-    deleteBooschap(removedBoodschaId);
+    deleteBooschap(removedBoodschapId);
   };
 
   const onDragEnd = (result: DropResult) => {
     if(!result.destination) return;
     const { source, destination } = result;
     const boodschappenCopy = [...boodschappen];
-    const [removed] = boodschappenCopy.splice(source.index, 1);
-    const newBoodschappen = [...boodschappenCopy.slice(0,destination?.index), removed, ...boodschappenCopy.slice(destination?.index)];
+    const [dragged] = boodschappenCopy.splice(source.index, 1);
+    const newBoodschappen = [...boodschappenCopy.slice(0,destination?.index), dragged, ...boodschappenCopy.slice(destination?.index)];
     updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschappen);
   }
 
@@ -64,7 +59,7 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
       <EditableTitle boodschappenlijstjeId={boodschappenlijstjeId}/>
       <DragDropContext onDragEnd={(result => onDragEnd(result))}>
         <Droppable droppableId={boodschappenlijstjeId}>
-          {(provided, snapshot) => {
+          {(provided) => {
             return <div {...provided.droppableProps} ref={provided.innerRef}>
               {boodschappen.map(
                 (boodschap, index) =>

@@ -15,8 +15,8 @@ export const Boodschappenlijstje: FC<BoodschappenlijstjeProps> = (
 
   useEffect(() => {
     listenToBoodschappenlijstje(boodschappenlijstjeId, (boodschappenlijstje: Boodschappenlijst) => {
-      setTitle(boodschappenlijstje.title);
-      setBoodschappen(boodschappenlijstje.boodschappen)
+      setTitle(boodschappenlijstje.title || '');
+      setBoodschappen(boodschappenlijstje.boodschappen || [])
     });
     return () => stopListeningToBoodschappenLijstje(boodschappenlijstjeId);
   }, [boodschappenlijstjeId]);

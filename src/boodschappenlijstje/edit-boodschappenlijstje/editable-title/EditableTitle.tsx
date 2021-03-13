@@ -13,7 +13,12 @@ export const EditableTitle: FC<EditableTitleProps> = ({ boodschappenlijstjeId}) 
 
   useEffect(() => {
     listenToBoodschappenlijstje(boodschappenlijstjeId, (boodschappenlijstje: Boodschappenlijst) => {
-      setTitle(boodschappenlijstje.title);
+      let title: string = boodschappenlijstje?.title;
+      if (!title) {
+        title = new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' });
+        updateBoodschappenlijstjeTitle(boodschappenlijstjeId, title);
+      }
+      setTitle(title);
     });
     return () => stopListeningToBoodschappenLijstje(boodschappenlijstjeId);
   }, [boodschappenlijstjeId]);
