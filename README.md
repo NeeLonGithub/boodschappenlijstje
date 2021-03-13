@@ -8,14 +8,16 @@ Boodschappenlijstje is a work in progress shopping list application.
 * Synchronise the list between users
 * Let users have access to multiple lists
 * Put items on the list
+* Edit items on the list
 * Take items off the list
 * Rearrange items with drag and drop
+* Add lists
+* Edit lists
+* Delete lists
+* Rearrange lists with drag and drop
 
 ### Next goals
 
-* Add lists
-* Delete lists
-* Rearrange lists
 * Allow only authenticated users to read and update the lists
 * Group items
 * Copy unchecked items to new list

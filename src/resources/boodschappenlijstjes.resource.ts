@@ -1,14 +1,22 @@
 import Firebase from '../firebase';
-import { Boodschappenlijst } from './boodschappenlijstje.resource';
+
+export interface AppData {
+  lists: string[];
+}
 
 export const listenToBoodschappenlijstjes = (
-  onNextBoodschappenlijstjes: (boodschappenlijstjes: {[boodschappenlijstjeId: string]: Boodschappenlijst}) => void
+  onNextBoodschappenlijstjes: (boodschappenlijstjeIds: string[]) => void
 ) => {
-  const databaseRef = Firebase.database().ref(`/lijstjes/`);
+  const databaseRef = Firebase.database().ref(`/app/`).child('lists');
   databaseRef.on('value', snapshot => onNextBoodschappenlijstjes(snapshot.val()));
 }
 
 export const stopListeningToBoodschappenLijstjes = () => {
-  const databaseRef = Firebase.database().ref(`/lijstjes/`);
+  const databaseRef = Firebase.database().ref(`/app/`).child('lists');
   databaseRef.off();
+}
+
+export const updateBoodschappenLijstjes = (boodschappenlijstjeIds: string[]) => {
+  const databaseRef = Firebase.database().ref(`/app/`);
+  databaseRef.update({ lists: boodschappenlijstjeIds });
 }

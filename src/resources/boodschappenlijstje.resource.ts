@@ -1,4 +1,5 @@
 import Firebase from '../firebase';
+import { deleteBooschap } from './boodschap.resources';
 
 export interface Boodschappenlijst {
   title: string;
@@ -25,4 +26,18 @@ export const updateBoodschappenlijstjeTitle = (boodschappenlijstId: string, titl
 export const updateBoodschappenlijstjeBoodschappen = (boodschappenlijstId: string, boodschapIds: string[]) => {
   const databaseRef = Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId);
   databaseRef.update({boodschappen: boodschapIds});
+}
+
+export const createBoodschappenlijstje = () => {
+  return Firebase.database().ref(`/lijstjes/`).push().key as string;
+}
+
+export const deleteBoodschappenlijstje = (boodschappenlijstId: string) => {
+  listenToBoodschappenlijstje(boodschappenlijstId,
+    (boodschappenlijst: Boodschappenlijst) => {
+      boodschappenlijst.boodschappen?.forEach((boodschapId: string) => deleteBooschap(boodschapId));
+    }
+  );
+  stopListeningToBoodschappenLijstje(boodschappenlijstId);
+  return Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId).remove();
 }

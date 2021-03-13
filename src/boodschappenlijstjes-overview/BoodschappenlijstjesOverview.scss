@@ -1,5 +1,7 @@
 .boodschappenlijstjes-overview {
-
+  &__text-button {
+    text-decoration: underline;
+  }
   &__clickable-text {
     cursor: pointer;
     margin-bottom: 18px;
