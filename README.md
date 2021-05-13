@@ -15,10 +15,12 @@ Boodschappenlijstje is a work in progress shopping list application.
 * Edit lists
 * Delete lists
 * Rearrange lists with drag and drop
+* Allow only authenticated users to read and update the lists
 
 ### Next goals
 
-* Allow only authenticated users to read and update the lists
+* Make deleting a 2-step action 
+* Allow authenticated users to only read and update their items
 * Group items
 * Copy unchecked items to new list
 * Mark items as 'not available' or something (unhappy checked), maybe add emoji's?
