@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
-import EditIcon from '../../icons/edit-icon';
-import DeleteIcon from '../../icons/delete-icon';
 import { Boodschappenlijst, listenToBoodschappenlijstje, stopListeningToBoodschappenLijstje } from '../../resources/boodschappenlijstje.resource';
+import EditOrDelete from '../../edit-or-delete/EditOrDelete';
 
 interface OverviewItemProps {
   boodschappenlijstjeId: string;
@@ -26,15 +25,6 @@ export const OverviewItem: FC<OverviewItemProps> = ({ boodschappenlijstjeId, sel
          onClick={() => selectLijstje()}>
       {title}
     </div>
-    <div>
-      <button
-        onClick={() => editLijstje()}>
-        <EditIcon/>
-      </button>
-      <button
-        onClick={() => deleteLijstje()}>
-        <DeleteIcon/>
-      </button>
-    </div>
+    <EditOrDelete onEdit={editLijstje} onDelete={deleteLijstje} />
   </div>);
 }

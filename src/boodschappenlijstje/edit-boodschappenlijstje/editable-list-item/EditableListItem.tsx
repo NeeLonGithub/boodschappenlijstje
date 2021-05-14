@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { TextInputField } from '../text-input-field/TextInputField';
-import EditIcon from '../../../icons/edit-icon';
-import DeleteIcon from '../../../icons/delete-icon';
 import { Boodschap, listenToBoodschap, stopListeningToBoodschap, updateBoodschapIsChecked, updateBoodschapName } from '../../../resources/boodschap.resources';
+import EditOrDelete from '../../../edit-or-delete/EditOrDelete';
 
 interface EditableListItemProps {
   boodschapId: string;
@@ -46,10 +45,7 @@ export const EditableListItem: FC<EditableListItemProps> = ({ boodschapId, delet
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ padding: '0 0 2px 3px' }}>{boodschap.name}</div>
-        <div>
-          <button onClick={() => setIsEditing(true)}><EditIcon/></button>
-          <button onClick={deleteItem}><DeleteIcon/></button>
-        </div>
+        <EditOrDelete onEdit={() => setIsEditing(true)} onDelete={deleteItem} />
       </div>
     );
   };

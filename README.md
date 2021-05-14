@@ -16,10 +16,10 @@ Boodschappenlijstje is a work in progress shopping list application.
 * Delete lists
 * Rearrange lists with drag and drop
 * Allow only authenticated users to read and update the lists
+* Make deleting a 2-step action and add a delay safety
 
 ### Next goals
 
-* Make deleting a 2-step action 
 * Allow authenticated users to only read and update their items
 * Group items
 * Copy unchecked items to new list

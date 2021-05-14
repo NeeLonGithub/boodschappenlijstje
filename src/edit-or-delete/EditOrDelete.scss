@@ -1,0 +1,32 @@
+.edit-or-delete {
+  flex: 0 0 80px;
+  height: 33px;
+  position: relative;
+}
+
+.edit {
+  position: absolute;
+  z-index: 0;
+}
+
+.cancel {
+  position: absolute;
+  left: 40px;
+  z-index: 0;
+}
+
+.delete {
+  position: absolute;
+  left: 40px;
+  z-index: 1;
+  transition: left .3s, background .3s, box-shadow .15s;
+
+  &-open {
+    background: #ff5651;
+    left: 0px;
+  }
+
+  &-active {
+    box-shadow: 0px 0px 10px 1px #ff5651;
+  }
+}
