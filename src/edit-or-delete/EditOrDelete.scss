@@ -11,22 +11,22 @@
 
 .cancel {
   position: absolute;
-  left: 40px;
   z-index: 0;
+  left: 40px;
 }
 
 .delete {
   position: absolute;
-  left: 40px;
   z-index: 1;
-  transition: left .3s, background .3s, box-shadow .15s;
+  left: 40px;
+  transition: left .3s, background .3s;
 
   &-open {
-    background: #ff5651;
+    background: mix(#ff5651, rgb(239, 239, 239), 30%);
     left: 0px;
   }
 
   &-active {
-    box-shadow: 0px 0px 10px 1px #ff5651;
+    background: #ff5651;
   }
 }

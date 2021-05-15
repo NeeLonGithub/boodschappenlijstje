@@ -13,28 +13,30 @@ const EditOrDelete: React.FunctionComponent<EditOrDeleteProps> = ({onEdit, onDel
 
   const [isOpenForDelete, setIsOpenForDelete] = useState(false);
   const [isActiveForDelete, setIsActiveForDelete] = useState(false);
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
   const onDeleteIconClick = () => {
     if (isActiveForDelete) {
       onDelete();
     } else {
       setIsOpenForDelete(true);
-      setTimeout(() => setIsActiveForDelete(true), 850);
+      setTimer(setTimeout(() => setIsActiveForDelete(true), 850));
     }
   };
 
   const onCancelIconClick = () => {
-    setIsOpenForDelete(false);
+    if (timer) clearTimeout(timer);
     setIsActiveForDelete(false);
+    setIsOpenForDelete(false);
   }
 
   return (
     <div className={'edit-or-delete'}>
-      <button className={`edit${isOpenForDelete ? ' edit-hidden' : ''}`}
+      <button className={'edit'}
               onClick={() => onEdit()}>
         <EditIcon/>
       </button>
-      <button className={`cancel${isOpenForDelete ? ' cancel-hidden' : ''}`}
+      <button className={'cancel'}
               onClick={onCancelIconClick}>
         <CancelIcon/>
       </button>
