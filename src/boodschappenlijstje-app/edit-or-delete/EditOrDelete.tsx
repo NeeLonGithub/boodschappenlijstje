@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import EditIcon from '../icons/edit-icon';
-import DeleteIcon from '../icons/delete-icon';
-import CancelIcon from '../icons/cancel-icon';
+import EditIcon from '../../icons/edit-icon';
+import DeleteIcon from '../../icons/delete-icon';
+import CancelIcon from '../../icons/cancel-icon';
 import './EditOrDelete.scss';
 
 interface EditOrDeleteProps {

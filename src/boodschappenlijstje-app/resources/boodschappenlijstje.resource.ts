@@ -1,4 +1,4 @@
-import Firebase from '../firebase';
+import Firebase from '../../firebase';
 import { deleteBooschap } from './boodschap.resources';
 
 export interface Boodschappenlijst {
