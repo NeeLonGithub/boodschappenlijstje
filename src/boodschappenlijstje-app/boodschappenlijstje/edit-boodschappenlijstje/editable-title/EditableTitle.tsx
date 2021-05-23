@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { TextInputField } from '../text-input-field/TextInputField';
+import { TextInputField } from '../../../../components/text-input-field/TextInputField';
 import { Boodschappenlijst, listenToBoodschappenlijstje, stopListeningToBoodschappenLijstje, updateBoodschappenlijstjeTitle } from '../../../resources/boodschappenlijstje.resource';
 
 interface EditableTitleProps {

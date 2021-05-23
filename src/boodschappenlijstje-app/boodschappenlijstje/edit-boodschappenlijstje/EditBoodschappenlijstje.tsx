@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from 'react-beautiful-dnd';
 import './EditBoodschappenlijstje.scss';
-import { TextInputField } from './text-input-field/TextInputField';
+import { TextInputField } from '../../../components/text-input-field/TextInputField';
 import { EditableTitle } from './editable-title/EditableTitle';
 import { EditableListItem } from './editable-list-item/EditableListItem';
 import {
@@ -10,7 +10,7 @@ import {
   stopListeningToBoodschappenLijstje,
   updateBoodschappenlijstjeBoodschappen
 } from '../../resources/boodschappenlijstje.resource';
-import { Boodschap, createBoodschap, deleteBooschap } from '../../resources/boodschap.resources';
+import { Boodschap, createBoodschap, deleteBoodschap } from '../../resources/boodschap.resources';
 
 interface EditBoodschappenlijstjeProps {
   boodschappenlijstjeId: string;
@@ -38,11 +38,11 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
     }
   };
 
-  const deleteBoodschap = (index: number) => {
+  const removeBoodschap = (index: number) => {
     let newBoodschappen: string[] = [...boodschappen];
     const [removedBoodschapId] = newBoodschappen.splice(index, 1);
     updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschappen);
-    deleteBooschap(removedBoodschapId);
+    deleteBoodschap(removedBoodschapId);
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -68,7 +68,7 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
                       <div ref={provided.innerRef}
                            {...provided.draggableProps}
                            {...provided.dragHandleProps}>
-                        <EditableListItem boodschapId={boodschap} deleteItem={() => deleteBoodschap(index)}/>
+                        <EditableListItem boodschapId={boodschap} deleteItem={() => removeBoodschap(index)}/>
                       </div>)}
                   </Draggable>
               )}

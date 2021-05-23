@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import './BoodschappenlijstjesOverview.scss';
-import { createBoodschappenlijstje, deleteBoodschappenlijstje } from '../resources/boodschappenlijstje.resource';
-import { listenToBoodschappenlijstjes, stopListeningToBoodschappenLijstjes, updateBoodschappenLijstjes } from '../resources/boodschappenlijstjes.resource';
+import { listenToBoodschappenlijstjes, stopListeningToBoodschappenLijstjes, createBoodschappenlijstje, deleteBoodschappenlijstje } from '../resources/boodschappenlijstje.resource';
+import { listenToListOrder, stopListeningToListOrder, updateListOrder } from '../resources/listOrder.resources';
 import { OverviewItem } from './overview-item/OverviewItem';
 import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from 'react-beautiful-dnd';
 
@@ -13,37 +13,44 @@ interface BoodschappenlijstjesOverviewProps {
 export const BoodschappenlijstjesOverview: FC<BoodschappenlijstjesOverviewProps> = ({ selectLijstje, editLijstje }) => {
 
   const [boodschappenlijstjes, setBoodschappenlijstjes] = useState<string[]>([]);
+  const [orderedLists, setOrderedLists] = useState<string[]>([]);
 
   useEffect(() => {
+    listenToListOrder(lists => {
+      setOrderedLists(lists || []);
+    });
     listenToBoodschappenlijstjes(lijstjes => {
       setBoodschappenlijstjes(lijstjes || []);
     });
-    return () => stopListeningToBoodschappenLijstjes();
-  }, [selectLijstje]);
+    return () => {
+      stopListeningToBoodschappenLijstjes();
+      stopListeningToListOrder();
+    };
+  }, []);
+
+  useEffect(() => {
+    setOrderedLists((lists) => {
+      const knownLists = lists.filter((list) => boodschappenlijstjes.includes(list));
+      const newLists = boodschappenlijstjes.filter((list) => !knownLists.includes(list));
+      return [...knownLists, ...newLists];
+    });
+  }, [boodschappenlijstjes]);
 
   const createLijstje = () => {
     const newLijstjeId: string = createBoodschappenlijstje();
-    const newBoodschappenlijstjes = [...boodschappenlijstjes, newLijstjeId];
-    updateBoodschappenLijstjes(newBoodschappenlijstjes);
     editLijstje(newLijstjeId);
-  }
-
-  const deleteLijstje = (index: number) => {
-    const newLijstjes: string[] = [...boodschappenlijstjes];
-    const [removedLijstjeId] = newLijstjes.splice(index, 1);
-    setBoodschappenlijstjes(newLijstjes);
-    updateBoodschappenLijstjes(newLijstjes);
-    deleteBoodschappenlijstje(removedLijstjeId);
-  }
+  };
 
   const onDragEnd = (result: DropResult) => {
-    if(!result.destination) return;
+    if (!result.destination) {
+      return;
+    }
     const { source, destination } = result;
-    const lijstjesCopy = [...boodschappenlijstjes];
-    const [dragged] = lijstjesCopy.splice(source.index, 1);
-    const newBoodschappen = [...lijstjesCopy.slice(0,destination?.index), dragged, ...lijstjesCopy.slice(destination?.index)];
-    updateBoodschappenLijstjes(newBoodschappen);
-  }
+    const orderedListCopy = [...orderedLists];
+    const [dragged] = orderedListCopy.splice(source.index, 1);
+    const newOrderedLists = [...orderedListCopy.slice(0, destination?.index), dragged, ...orderedListCopy.slice(destination?.index)];
+    updateListOrder(newOrderedLists);
+  };
 
   return (
     <div className="boodschappenlijstjes-overview">
@@ -54,7 +61,7 @@ export const BoodschappenlijstjesOverview: FC<BoodschappenlijstjesOverviewProps>
         <Droppable droppableId={'boodschappenlijstjes'}>
           {(provided) => {
             return <div {...provided.droppableProps} ref={provided.innerRef}>
-              {boodschappenlijstjes.map(
+              {orderedLists.map(
                 (lijstjeId, index) =>
                   <Draggable draggableId={lijstjeId} key={lijstjeId} index={index}>
                     {(provided: DraggableProvided) => (
@@ -65,12 +72,12 @@ export const BoodschappenlijstjesOverview: FC<BoodschappenlijstjesOverviewProps>
                                       boodschappenlijstjeId={lijstjeId}
                                       selectLijstje={() => selectLijstje(lijstjeId)}
                                       editLijstje={() => editLijstje(lijstjeId)}
-                                      deleteLijstje={() => deleteLijstje(index)} />
+                                      deleteLijstje={() => deleteBoodschappenlijstje(lijstjeId)}/>
                       </div>)}
                   </Draggable>
               )}
               {provided.placeholder}
-            </div>
+            </div>;
           }}
         </Droppable>
       </DragDropContext>

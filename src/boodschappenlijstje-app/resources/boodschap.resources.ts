@@ -29,6 +29,6 @@ export const createBoodschap = (boodschap: Boodschap) => {
   return Firebase.database().ref(`/boodschappen/`).push(boodschap).key as string;
 }
 
-export const deleteBooschap = (boodschapId: string) => {
+export const deleteBoodschap = (boodschapId: string) => {
   return Firebase.database().ref(`/boodschappen/`).child(boodschapId).remove();
 }

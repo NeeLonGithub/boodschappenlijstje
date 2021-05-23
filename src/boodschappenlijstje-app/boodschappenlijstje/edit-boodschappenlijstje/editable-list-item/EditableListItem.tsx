@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { TextInputField } from '../text-input-field/TextInputField';
+import { TextInputField } from '../../../../components/text-input-field/TextInputField';
 import { Boodschap, listenToBoodschap, stopListeningToBoodschap, updateBoodschapIsChecked, updateBoodschapName } from '../../../resources/boodschap.resources';
 import EditOrDelete from '../../../edit-or-delete/EditOrDelete';
 

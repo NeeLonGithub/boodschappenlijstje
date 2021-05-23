@@ -1,9 +1,21 @@
 import Firebase from '../../firebase';
-import { deleteBooschap } from './boodschap.resources';
+import { deleteBoodschap } from './boodschap.resources';
 
 export interface Boodschappenlijst {
   title: string;
   boodschappen: string[];
+}
+
+export const listenToBoodschappenlijstjes = (
+  onNextBoodschappenlijstjes: (boodschappenlijstjeIds: string[]) => void
+) => {
+  const databaseRef = Firebase.database().ref(`/lijstjes/`);
+  databaseRef.on('value', snapshot => onNextBoodschappenlijstjes(Object.keys(snapshot.val())));
+}
+
+export const stopListeningToBoodschappenLijstjes = () => {
+  const databaseRef = Firebase.database().ref(`/lijstjes/`);
+  databaseRef.off();
 }
 
 export const listenToBoodschappenlijstje = (
@@ -35,7 +47,7 @@ export const createBoodschappenlijstje = () => {
 export const deleteBoodschappenlijstje = (boodschappenlijstId: string) => {
   listenToBoodschappenlijstje(boodschappenlijstId,
     (boodschappenlijst: Boodschappenlijst) => {
-      boodschappenlijst.boodschappen?.forEach((boodschapId: string) => deleteBooschap(boodschapId));
+      boodschappenlijst.boodschappen?.forEach((boodschapId: string) => deleteBoodschap(boodschapId));
     }
   );
   stopListeningToBoodschappenLijstje(boodschappenlijstId);

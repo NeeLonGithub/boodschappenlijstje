@@ -2,7 +2,7 @@ import React from 'react';
 
 //https://fonts.google.com/icons?selected=Material%20Icons%20Round%3Ado_not_disturb_alt
 const CancelIcon = () => {
-  return (<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+  return (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
     <g>
       <rect fill="none" height="24" width="24"/>
     </g>
