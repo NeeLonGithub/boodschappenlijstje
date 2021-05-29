@@ -1,6 +1,7 @@
 import Firebase from '../../firebase';
 
 export interface Boodschap {
+  parentId: string;
   name: string;
   isChecked: boolean;
 }

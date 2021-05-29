@@ -17,11 +17,14 @@ Boodschappenlijstje is a work in progress shopping list application.
 * Rearrange lists with drag and drop
 * Allow only authenticated users to read and update the lists
 * Make deleting a 2-step action and add a delay safety
+* Allow authenticated users to only read and update their own lists and items
 
 ### Next goals
 
-* Allow authenticated users to only read and update their items
-* Group items
+* Account management page
+* Share lists with other users
+* See isChecked value of boodschappen in edit mode (checkmark?)
+* Group items and lists
 * Copy unchecked items to new list
 * Mark items as 'not available' or something (unhappy checked), maybe add emoji's?
 * Install as PWA

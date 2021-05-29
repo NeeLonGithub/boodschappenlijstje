@@ -31,7 +31,7 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
 
   const addBoodschap = (name: string) => {
     if (name) {
-      const newBoodschap: Boodschap = { name: name, isChecked: false };
+      const newBoodschap: Boodschap = { parentId: boodschappenlijstjeId, name: name, isChecked: false };
       const boodschapId: string = createBoodschap(newBoodschap);
       const newBoodschappen = [...boodschappen, boodschapId];
       updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschappen);

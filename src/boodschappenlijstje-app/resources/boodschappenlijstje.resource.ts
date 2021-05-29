@@ -4,17 +4,24 @@ import { deleteBoodschap } from './boodschap.resources';
 export interface Boodschappenlijst {
   title: string;
   boodschappen: string[];
+  ownerId: string;
 }
 
 export const listenToBoodschappenlijstjes = (
   onNextBoodschappenlijstjes: (boodschappenlijstjeIds: string[]) => void
 ) => {
-  const databaseRef = Firebase.database().ref(`/lijstjes/`);
-  databaseRef.on('value', snapshot => onNextBoodschappenlijstjes(Object.keys(snapshot.val())));
+  const databaseRef = Firebase.database().ref(`/listIds/`);
+  databaseRef.on('value', async (snapshot) => {
+    const availableListIds: string[] = Object.keys(snapshot.val());
+    const readableLists: string[] = (await Promise.all(availableListIds.map(
+      (listId) => Firebase.database().ref(`/lijstjes/`).child(listId).once('value').then(() => listId).catch(() => '')
+    ))).filter(listId => listId !== '');
+    return onNextBoodschappenlijstjes(readableLists);
+  });
 }
 
 export const stopListeningToBoodschappenLijstjes = () => {
-  const databaseRef = Firebase.database().ref(`/lijstjes/`);
+  const databaseRef = Firebase.database().ref(`/listIds/`);
   databaseRef.off();
 }
 
@@ -41,15 +48,19 @@ export const updateBoodschappenlijstjeBoodschappen = (boodschappenlijstId: strin
 }
 
 export const createBoodschappenlijstje = () => {
-  return Firebase.database().ref(`/lijstjes/`).push().key as string;
+  const currentUserId = Firebase.auth().currentUser?.uid;
+  const listId = Firebase.database().ref(`/lijstjes/`).push({ ownerId: currentUserId }).key as string;
+  Firebase.database().ref(`/listIds/`).child(listId).set(true);
+  return listId;
 }
 
-export const deleteBoodschappenlijstje = (boodschappenlijstId: string) => {
-  listenToBoodschappenlijstje(boodschappenlijstId,
+export const deleteBoodschappenlijstje = (listId: string) => {
+  Firebase.database().ref(`/listIds/`).child(listId).remove();
+  listenToBoodschappenlijstje(listId,
     (boodschappenlijst: Boodschappenlijst) => {
       boodschappenlijst.boodschappen?.forEach((boodschapId: string) => deleteBoodschap(boodschapId));
     }
   );
-  stopListeningToBoodschappenLijstje(boodschappenlijstId);
-  return Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId).remove();
+  stopListeningToBoodschappenLijstje(listId);
+  return Firebase.database().ref(`/lijstjes/`).child(listId).remove();
 }
