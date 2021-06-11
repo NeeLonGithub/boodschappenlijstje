@@ -47,6 +47,25 @@ export const updateBoodschappenlijstjeBoodschappen = (boodschappenlijstId: strin
   databaseRef.update({boodschappen: boodschapIds});
 }
 
+// export const updateBoodschappenlijstjeOwner = (boodschappenlijstId: string, userId: string) => {
+//   const databaseRef = Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId);
+//   databaseRef.update({owner: userId});
+// }
+//
+// export const addBoodschappenlijstjeUser = (boodschappenlijstId: string, userId: string, privileges: UserPrivileges) => {
+//   const databaseRef = Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId).child('users').child(userId);
+//   return databaseRef.set(privileges);
+// }
+//
+// export const updateBoodschappenlijstjeUser = (boodschappenlijstId: string, userId: string, privileges: UserPrivileges) => {
+//   const databaseRef = Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId).child('users').child(userId);
+//   databaseRef.update(privileges);
+// }
+//
+// export const removeBoodschappenlijstjeUser = (boodschappenlijstId: string, userId: string) => {
+//   return Firebase.database().ref(`/lijstjes/`).child(boodschappenlijstId).child('users').child(userId).remove();
+// }
+
 export const createBoodschappenlijstje = () => {
   const currentUserId = Firebase.auth().currentUser?.uid;
   const listId = Firebase.database().ref(`/lijstjes/`).push({ ownerId: currentUserId }).key as string;

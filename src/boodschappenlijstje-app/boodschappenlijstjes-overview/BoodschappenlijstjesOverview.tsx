@@ -54,8 +54,8 @@ export const BoodschappenlijstjesOverview: FC<BoodschappenlijstjesOverviewProps>
 
   return (
     <div className="boodschappenlijstjes-overview">
-      <h1>Boodschappenlijstjes</h1>
-      <div onClick={() => createLijstje()} className="boodschappenlijstjes-overview__clickable-text boodschappenlijstjes-overview__text-button">Maak een nieuw lijstje...</div>
+      <h1 className={"centered-title"}>Appointments</h1>
+      <div onClick={() => createLijstje()} className="boodschappenlijstjes-overview__clickable-text boodschappenlijstjes-overview__text-button">New appointment...</div>
 
       <DragDropContext onDragEnd={(result => onDragEnd(result))}>
         <Droppable droppableId={'boodschappenlijstjes'}>

@@ -1,0 +1,12 @@
+.single-purpose-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+
+  svg {
+    flex: 1 0 auto;
+  }
+}

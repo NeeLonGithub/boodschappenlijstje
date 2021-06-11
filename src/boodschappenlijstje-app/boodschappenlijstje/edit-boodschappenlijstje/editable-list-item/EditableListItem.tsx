@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { TextInputField } from '../../../../components/text-input-field/TextInputField';
 import { Boodschap, listenToBoodschap, stopListeningToBoodschap, updateBoodschapIsChecked, updateBoodschapName } from '../../../resources/boodschap.resources';
 import EditOrDelete from '../../../edit-or-delete/EditOrDelete';
+import './EditableListItem.scss';
 
 interface EditableListItemProps {
   boodschapId: string;
@@ -33,10 +34,10 @@ export const EditableListItem: FC<EditableListItemProps> = ({ boodschapId, delet
   };
 
   const renderEditListItem = (boodschap: Boodschap) => {
-    return (
-      <TextInputField
+    return (<TextInputField
+        className={'list-item-input'}
         text={boodschap.name}
-        onChange={(name: string) => handleInputChange(name)}
+        onChange={handleInputChange}
       />
     );
   };

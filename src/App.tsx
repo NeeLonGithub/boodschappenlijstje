@@ -4,6 +4,7 @@ import { Login } from './login/Login';
 import Firebase from './firebase';
 import Loading from './loading/Loading';
 import BoodschappenlijstjeApp from './boodschappenlijstje-app/BoodschappenlijstjeApp';
+import AccountHeader from './account-header/AccountHeader';
 
 function App() {
 
@@ -30,7 +31,9 @@ function App() {
       </div>
     )
   } else {
-    return <BoodschappenlijstjeApp />
+    return (<AccountHeader>
+        <BoodschappenlijstjeApp />
+      </AccountHeader>)
   }
 }
 
