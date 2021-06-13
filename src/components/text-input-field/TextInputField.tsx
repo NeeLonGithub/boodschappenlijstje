@@ -1,15 +1,14 @@
 import React, { FC, useState } from 'react';
-import './TextInputField.scss';
 
 interface TextInputFieldProps {
+  className?: string,
   text: string;
-  size?: 'normal' | 'large';
   onChange: (text: string) => void;
 }
 
-export const TextInputField: FC<TextInputFieldProps> = ({ text, size= 'normal', onChange }) => {
+export const TextInputField: FC<TextInputFieldProps> = ({ text = '', onChange, className  }) => {
 
-  const [value, setValue] = useState(text || '');
+  const [value, setValue] = useState(text);
 
   const onBlur = (value: string) => {
     setValue('');
@@ -23,13 +22,11 @@ export const TextInputField: FC<TextInputFieldProps> = ({ text, size= 'normal', 
     }
   }
 
-  return (<div>
-      <input className={`text-input text-input__size--${size}`}
-             autoFocus
-             value={value}
-             onChange={(event) => setValue(event.target.value)}
-             onBlur={(event) => onBlur(event.target.value)}
-             onKeyPress={(event) => onKeyPress(event.key, event.currentTarget.value)}
-      />
-    </div>);
+  return (<input className={className}
+                 autoFocus
+                 value={value}
+                 onChange={(event) => setValue(event.target.value)}
+                 onBlur={(event) => onBlur(event.target.value)}
+                 onKeyPress={(event) => onKeyPress(event.key, event.currentTarget.value)}
+      />);
 };

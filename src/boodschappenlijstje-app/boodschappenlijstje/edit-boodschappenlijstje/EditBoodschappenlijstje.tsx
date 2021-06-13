@@ -77,7 +77,7 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
           }}
         </Droppable>
       </DragDropContext>
-      <TextInputField text='' onChange={name => addBoodschap(name)}/>
+      <TextInputField text='' onChange={addBoodschap} className={'list-item-input'}/>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { TextInputField } from '../../../../components/text-input-field/TextInputField';
 import { Boodschappenlijst, listenToBoodschappenlijstje, stopListeningToBoodschappenLijstje, updateBoodschappenlijstjeTitle } from '../../../resources/boodschappenlijstje.resource';
+import './EditableTitle.scss';
 
 interface EditableTitleProps {
   boodschappenlijstjeId: string;
@@ -31,9 +32,9 @@ export const EditableTitle: FC<EditableTitleProps> = ({ boodschappenlijstjeId}) 
   const renderEditTitle = () => {
     return (
       <TextInputField
+        className={'title-input'}
         text={title}
-        size={'large'}
-        onChange={(title: string) => handleTitleUpdate(title)}
+        onChange={handleTitleUpdate}
       />
     );
   };
