@@ -1,11 +1,5 @@
 {
   "rules": {
-    "listIds": {
-      ".read": "auth.uid !== null",
-      "$listId": {
-        ".write": "auth.uid === root.child('lijstjes').child($listId).child('ownerId').val()"
-      }
-    },
     "lijstjes": {
       "$lijstjeId": {
         ".read": "auth.uid === data.child('ownerId').val()",
@@ -22,6 +16,14 @@
       "$userId": {
         ".read": "auth.uid === $userId",
         ".write": "auth.uid === $userId"
+      }
+    },
+    "public": {
+      ".read": "auth.uid !== null",
+      "list-ids": {
+        "$listId": {
+          ".write": "auth.uid === root.child('lijstjes').child($listId).child('ownerId').val()"
+        }
       }
     }
   }

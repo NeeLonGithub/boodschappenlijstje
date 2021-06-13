@@ -7,10 +7,12 @@ export interface Boodschappenlijst {
   ownerId: string;
 }
 
+const listIdsPath = '/public/list-ids/';
+
 export const listenToBoodschappenlijstjes = (
   onNextBoodschappenlijstjes: (boodschappenlijstjeIds: string[]) => void
 ) => {
-  const databaseRef = Firebase.database().ref(`/listIds/`);
+  const databaseRef = Firebase.database().ref(listIdsPath);
   databaseRef.on('value', async (snapshot) => {
     const availableListIds: string[] = Object.keys(snapshot.val());
     const readableLists: string[] = (await Promise.all(availableListIds.map(
@@ -21,7 +23,7 @@ export const listenToBoodschappenlijstjes = (
 }
 
 export const stopListeningToBoodschappenLijstjes = () => {
-  const databaseRef = Firebase.database().ref(`/listIds/`);
+  const databaseRef = Firebase.database().ref(listIdsPath);
   databaseRef.off();
 }
 
@@ -50,12 +52,12 @@ export const updateBoodschappenlijstjeBoodschappen = (boodschappenlijstId: strin
 export const createBoodschappenlijstje = () => {
   const currentUserId = Firebase.auth().currentUser?.uid;
   const listId = Firebase.database().ref(`/lijstjes/`).push({ ownerId: currentUserId }).key as string;
-  Firebase.database().ref(`/listIds/`).child(listId).set(true);
+  Firebase.database().ref(listIdsPath).child(listId).set(true);
   return listId;
 }
 
 export const deleteBoodschappenlijstje = (listId: string) => {
-  Firebase.database().ref(`/listIds/`).child(listId).remove();
+  Firebase.database().ref(listIdsPath).child(listId).remove();
   listenToBoodschappenlijstje(listId,
     (boodschappenlijst: Boodschappenlijst) => {
       boodschappenlijst.boodschappen?.forEach((boodschapId: string) => deleteBoodschap(boodschapId));
