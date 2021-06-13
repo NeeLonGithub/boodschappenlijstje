@@ -1,7 +1,7 @@
 import { BoodschappenlijstjesOverview } from './boodschappenlijstjes-overview/BoodschappenlijstjesOverview';
 import { EditBoodschappenlijstje } from './boodschappenlijstje/edit-boodschappenlijstje/EditBoodschappenlijstje';
 import { Boodschappenlijstje } from './boodschappenlijstje/Boodschappenlijstje';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface BoodschappenlijstjeAppProps {}
 
@@ -9,13 +9,39 @@ const BoodschappenlijstjeApp: React.FunctionComponent<BoodschappenlijstjeAppProp
 
   const [selectedLijstje, setSelectedLijstje] = useState<string>();
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [isOnStartPage, setIsOnStartPage] = useState<boolean>(true);
+
+  useEffect(() => {
+    window.addEventListener('popstate', onBackButtonEvent);
+    return () => {
+      window.removeEventListener('popstate', onBackButtonEvent);
+    };
+  }, [isOnStartPage]);
+
+  const onBackButtonEvent = () => {
+    if (!isOnStartPage) {
+      setSelectedLijstje(undefined);
+      setIsOnStartPage(true);
+    }
+  }
+
+  const pushToHistory = () => {
+    setIsOnStartPage(false);
+    window.history.pushState(null, '', window.location.pathname);
+  }
+
+  const mimicBackButton = () => {
+    window.history.back();
+  }
 
   const viewLijstje = (lijstjeId: string) => {
+    pushToHistory();
     setEditMode(false);
     setSelectedLijstje(lijstjeId);
   };
 
   const editLijstje = (lijstjeId: string) => {
+    pushToHistory();
     setEditMode(true);
     setSelectedLijstje(lijstjeId);
   };
@@ -29,7 +55,7 @@ const BoodschappenlijstjeApp: React.FunctionComponent<BoodschappenlijstjeAppProp
   } else {
     return (
       <div className="App">
-        <button onClick={() => setSelectedLijstje(undefined)}>Terug</button>
+        <button onClick={mimicBackButton}>Terug</button>
         {editMode ?
           <EditBoodschappenlijstje boodschappenlijstjeId={selectedLijstje}/> :
           <Boodschappenlijstje boodschappenlijstjeId={selectedLijstje}/>}
