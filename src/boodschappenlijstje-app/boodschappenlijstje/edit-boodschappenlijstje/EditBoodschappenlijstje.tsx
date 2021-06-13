@@ -1,30 +1,28 @@
-import React, { FC, useEffect, useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from 'react-beautiful-dnd';
-import './EditBoodschappenlijstje.scss';
-import { TextInputField } from '../../../components/text-input-field/TextInputField';
+import React, { useEffect, useState } from 'react';
 import { EditableTitle } from './editable-title/EditableTitle';
-import { EditableListItem } from './editable-list-item/EditableListItem';
+import DragDropEditableListItems from './drag-drop-editable-list-items/DragDropEditableListItems';
+import { TextInputField } from '../../../components/text-input-field/TextInputField';
 import {
   Boodschappenlijst,
   listenToBoodschappenlijstje,
   stopListeningToBoodschappenLijstje,
   updateBoodschappenlijstjeBoodschappen
 } from '../../resources/boodschappenlijstje.resource';
-import { Boodschap, createBoodschap, deleteBoodschap } from '../../resources/boodschap.resources';
+import { Boodschap, createBoodschap } from '../../resources/boodschap.resources';
 
 interface EditBoodschappenlijstjeProps {
   boodschappenlijstjeId: string;
 }
 
-export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
+export const EditBoodschappenlijstje: React.FunctionComponent<EditBoodschappenlijstjeProps> = (
   { boodschappenlijstjeId }
 ) => {
 
-  const [boodschappen, setBoodschappen] = useState<string[]>([]);
+  const [boodschapIds, setBoodschapIds] = useState<string[]>([]);
 
   useEffect(() => {
     listenToBoodschappenlijstje(boodschappenlijstjeId, (boodschappenlijstje: Boodschappenlijst) => {
-      setBoodschappen(boodschappenlijstje?.boodschappen || []);
+      setBoodschapIds(boodschappenlijstje?.boodschappen || []);
     });
     return () => stopListeningToBoodschappenLijstje(boodschappenlijstjeId);
   }, [boodschappenlijstjeId]);
@@ -33,50 +31,15 @@ export const EditBoodschappenlijstje: FC<EditBoodschappenlijstjeProps> = (
     if (name) {
       const newBoodschap: Boodschap = { parentId: boodschappenlijstjeId, name: name, isChecked: false };
       const boodschapId: string = createBoodschap(newBoodschap);
-      const newBoodschappen = [...boodschappen, boodschapId];
-      updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschappen);
+      const newBoodschapIds = [...boodschapIds, boodschapId];
+      updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschapIds);
     }
   };
-
-  const removeBoodschap = (index: number) => {
-    let newBoodschappen: string[] = [...boodschappen];
-    const [removedBoodschapId] = newBoodschappen.splice(index, 1);
-    updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschappen);
-    deleteBoodschap(removedBoodschapId);
-  };
-
-  const onDragEnd = (result: DropResult) => {
-    if(!result.destination) return;
-    const { source, destination } = result;
-    const boodschappenCopy = [...boodschappen];
-    const [dragged] = boodschappenCopy.splice(source.index, 1);
-    const newBoodschappen = [...boodschappenCopy.slice(0,destination?.index), dragged, ...boodschappenCopy.slice(destination?.index)];
-    updateBoodschappenlijstjeBoodschappen(boodschappenlijstjeId, newBoodschappen);
-  }
 
   return (
     <div>
       <EditableTitle boodschappenlijstjeId={boodschappenlijstjeId}/>
-      <DragDropContext onDragEnd={(result => onDragEnd(result))}>
-        <Droppable droppableId={boodschappenlijstjeId}>
-          {(provided) => {
-            return <div {...provided.droppableProps} ref={provided.innerRef}>
-              {boodschappen.map(
-                (boodschap, index) =>
-                  <Draggable draggableId={boodschap} key={boodschap} index={index}>
-                    {(provided: DraggableProvided) => (
-                      <div ref={provided.innerRef}
-                           {...provided.draggableProps}
-                           {...provided.dragHandleProps}>
-                        <EditableListItem boodschapId={boodschap} deleteItem={() => removeBoodschap(index)}/>
-                      </div>)}
-                  </Draggable>
-              )}
-              {provided.placeholder}
-            </div>
-          }}
-        </Droppable>
-      </DragDropContext>
+      <DragDropEditableListItems boodschappenlijstjeId={boodschappenlijstjeId}/>
       <TextInputField text='' onChange={addBoodschap} className={'list-item-input'}/>
     </div>
   );
