@@ -44,7 +44,7 @@ export const EditableListItem: FC<EditableListItemProps> = ({ boodschapId, delet
 
   const renderListItem = (boodschap: Boodschap) => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={'list-item-editable'}>
         <div style={{ padding: '0 0 2px 3px' }}>{boodschap.name}</div>
         <EditOrDelete onEdit={() => setIsEditing(true)} onDelete={deleteItem} />
       </div>

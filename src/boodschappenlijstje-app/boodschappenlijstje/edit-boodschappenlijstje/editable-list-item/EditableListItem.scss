@@ -1,5 +1,17 @@
 .list-item-input {
-  width: calc(100% - 6px);
+  width: calc(100% - 12px);
   font-size: 16px;
   height: 27px;
+}
+
+.list-item-editable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(239, 239, 45, 0.15);
+  }
 }

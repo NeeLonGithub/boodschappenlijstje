@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import './OverviewItem.scss';
 import { Boodschappenlijst, listenToBoodschappenlijstje, stopListeningToBoodschappenLijstje } from '../../resources/boodschappenlijstje.resource';
 import EditOrDelete from '../../edit-or-delete/EditOrDelete';
 
@@ -20,11 +21,13 @@ export const OverviewItem: FC<OverviewItemProps> = ({ boodschappenlijstjeId, sel
     return () => stopListeningToBoodschappenLijstje(boodschappenlijstjeId);
   }, [boodschappenlijstjeId]);
 
-  return (<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-    <div className="boodschappenlijstjes-overview__clickable-text"
-         onClick={() => selectLijstje()}>
-      {title}
+  return (
+    <div className="boodschappenlijstjes-overview-item">
+      <div className="boodschappenlijstjes-overview__clickable-text"
+           onClick={() => selectLijstje()}>
+        {title}
+      </div>
+      <EditOrDelete onEdit={editLijstje} onDelete={deleteLijstje} />
     </div>
-    <EditOrDelete onEdit={editLijstje} onDelete={deleteLijstje} />
-  </div>);
+  );
 }
